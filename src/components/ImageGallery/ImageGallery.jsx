@@ -11,7 +11,6 @@ export const ImageGallery = ({onClick, inputValue, page, loadMoreBtn}) => {
       images: [],
       total: 0,
       status: 'idle',
-      inputValue: '',
     }
   );
 
