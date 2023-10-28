@@ -18,12 +18,14 @@ export const ImageGallery = ({onClick, inputValue, page, loadMoreBtn}) => {
     if (inputValue !== '') {
       fetchLoad();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   useEffect(() => {
     if (page > 1) {
       fetchLoadMore();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   const fetchLoad = () => {
