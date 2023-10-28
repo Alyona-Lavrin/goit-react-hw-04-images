@@ -11,48 +11,55 @@ export const ImageGallery = ({onClick, inputValue, page, loadMoreBtn}) => {
       images: [],
       total: 0,
       status: 'idle',
+      inputValue: '',
     }
   );
 
   useEffect(() => {
-    if (inputValue !== '') {
-      fetchLoad();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValue]);
-
-  useEffect(() => {
-    if (page > 1) {
-      fetchLoadMore();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
-
-  const fetchLoad = () => {
-    getImages(inputValue, page)
-      .then(response => {
+    async function fetchLoad() {
+      try {
+        const response = await getImages(inputValue, page)
         setState({
           images: response.hits,
           total: response.totalHits,
           status: 'resolve',
+          inputValue: inputValue,
         });
-      })
-      .catch(error => setState({ ...state, status: 'rejected' }));
-  };
+      } catch (error) {
+        setState(
+          { 
+            ...state, 
+            status: 'rejected', 
+            inputValue: inputValue
+          }
+        )
+      }
+    };
 
-  const fetchLoadMore = () => {
-    getImages(inputValue, page)
-      .then(response => {
+    if (state.inputValue !== inputValue && inputValue !== '') {
+      fetchLoad();
+    }
+
+    async function fetchLoadMore() {
+      try {
+        const response = await getImages(inputValue, page);
         setState(
           {
             ...state,
             images: [...state.images, ...response.hits],
             status: 'resolve',
+            page: page,
           }
         );
-      })
-      .catch(error => setState({ ...state, status: 'rejected' }));
-  };
+      } catch (error) {
+        setState({ ...state, status: 'rejected', page: page })
+      }
+    };
+
+    if (state.page !== page && page > 1) {
+      fetchLoadMore();
+    }
+  }, [state, inputValue, page]);
 
   const { images, status } = state;
 
