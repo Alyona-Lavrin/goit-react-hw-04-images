@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import Modal from "./Modal/Modal";
+import { Modal } from "./Modal/Modal";
 import { Searchbar } from "./Searchbar/Searchbar";
 
 export const App = () => {
@@ -13,7 +13,7 @@ export const App = () => {
     }
   );
 
-  const { inputValue, modalImg, showModal ,page} = state;
+  const { inputValue, modalImg, showModal, page} = state;
 
   const getInputValue = handleValue => {
     setState({ ...state, inputValue: handleValue, page: 1 })
@@ -24,8 +24,7 @@ export const App = () => {
   }
 
   const getLargeImg = url => {
-    toggleModal();
-    setState({ ...state, modalImg: url });
+    setState({ ...state, modalImg: url, showModal: !showModal });
   }
 
   const loadMoreBtn = () => {
